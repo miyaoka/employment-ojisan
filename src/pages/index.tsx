@@ -16,6 +16,11 @@ const getTimeDiff = (diff: number): TimeDiff => {
   return { date, hour, min, sec, isBefore: diff > 0 };
 };
 
+const ogImage =
+  "https://employment-ojisan.vercel.app/images/syusyoku_nayamu_neet_man.png";
+const title = "@sadnessOjisan 就職タイマー";
+const desc = "社会性へのカウントダウン";
+
 const Home: NextPage = () => {
   const [time, setTime] = useState(getTimeForEmployment());
   useEffect(() => {
@@ -27,9 +32,17 @@ const Home: NextPage = () => {
   return (
     <div className="p-10">
       <Head>
-        <title>employment-ojisan countdown</title>
-        <meta name="description" content="employment-ojisan countdown" />
+        <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="description" key="description" content={desc} />
+        <meta property="og:title" key="og:title" content={title} />
+        <meta property="og:description" key="og:description" content={desc} />
+        <meta property="og:image" key="og:image" content={ogImage} />
+        <meta
+          name="twitter:card"
+          key="twitter:card"
+          content="summary_large_image"
+        />
       </Head>
       <main>{CountDown(getTimeDiff(time))}</main>
     </div>
