@@ -16,8 +16,7 @@ const getTimeDiff = (diff: number): TimeDiff => {
   return { date, hour, min, sec, isBefore: diff > 0 };
 };
 
-const ogImage =
-  "https://employment-ojisan.vercel.app/images/syusyoku_nayamu_neet_man.png";
+const ogImage = "https://i.imgur.com/9XZ9quS.png";
 const title = "@sadnessOjisan 就職タイマー";
 const desc = "社会性へのカウントダウン";
 
