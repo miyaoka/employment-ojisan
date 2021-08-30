@@ -37,7 +37,7 @@ export default function CountDown(diff: TimeDiff) {
       <div>{postText}</div>
       <div className="flex justify-center">
         <a
-          href={`https://twitter.com/intent/tweet?text="${tweetText}"%0ahttps://employment-ojisan.vercel.app/`}
+          href={`https://twitter.com/intent/tweet?hashtags=syusyoku_20210901&text="${tweetText}"%0ahttps://employment-ojisan.vercel.app/`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center flex-col"
