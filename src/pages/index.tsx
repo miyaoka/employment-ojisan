@@ -29,7 +29,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="p-10">
+    <div className="p-4 sm:p-10">
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />

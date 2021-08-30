@@ -33,7 +33,9 @@ export default function CountDown(diff: TimeDiff) {
       </a>
       ) さんが
       <div>{preText}</div>
-      <div className="text-[96px]">{time}</div>
+      <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold">
+        {time}
+      </div>
       <div>{postText}</div>
       <div className="flex justify-center">
         <a
