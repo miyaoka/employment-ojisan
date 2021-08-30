@@ -9,7 +9,16 @@ export type TimeDiff = {
 export default function CountDown(diff: TimeDiff) {
   const { sec, min, hour, date, isBefore } = diff;
   return (
-    <div className="">
+    <div>
+      <img
+        src={`/images/${
+          isBefore
+            ? "syusyoku_nayamu_neet_man.png"
+            : "message_syusyoku_omedetou.png"
+        }`}
+        alt=""
+        className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen"
+      />
       統合開発環境 (
       <a
         href="https://twitter.com/sadnessOjisan"
