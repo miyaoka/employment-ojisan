@@ -3,9 +3,9 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import CountDown, { TimeDiff } from "../components/CountDown";
 
-const employmentTime = new Date("2021-09-01T00:00:00").getTime();
+const employmentTime = new Date("2021-09-01T00:00:00+09:00").getTime();
 const getTimeForEmployment = () =>
-  Math.floor((employmentTime - new Date().getTime()) / 1000);
+  Math.floor((employmentTime - Date.now()) / 1000);
 
 const getTimeDiff = (diff: number): TimeDiff => {
   const time = Math.abs(diff);
