@@ -111,10 +111,23 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   }
   const isBefore = msFromTarget < 0;
   const preText = `就職${isBefore ? "するまで、あと" : "してから"}`;
-  const time = `${date}日${hour}時間${min}分${sec.toFixed(3)}秒`;
+
+  // 大きい順に値が無い時間単位を省き、逆順にする
+  const reducedTime = [date, hour, min, sec.toFixed(3)].reduce(
+    (acc: (number | string)[], curr) => {
+      if (curr === 0 && acc.length === 0) return acc;
+      return [curr, ...acc];
+    },
+    []
+  );
+  // 小さい順に時間単位を適用していく
+  const timeUnit = ["秒", "分", "時間", "日"];
+  const timeText = reducedTime.reduce((acc, curr, i) => {
+    return `${curr}${timeUnit[i]}${acc}`;
+  }, "");
   const noSecTime = `${date}日${hour}時間${min}分`;
   const postText = `${isBefore ? "です" : "経ちました"}。`;
-  const tweetText = `${subject}${preText}${time}${postText}`;
+  const tweetText = `${subject}${preText}${timeText}${postText}`;
   const srText = `${subject}${preText}${noSecTime}${postText}`;
   const imgSrc = `/images/${
     isBefore ? "syusyoku_nayamu_neet_man.png" : "message_syusyoku_omedetou.png"
@@ -131,7 +144,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
         {profile}
         <div>{preText}</div>
         <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
-          {time}
+          {timeText}
         </div>
         <div>{postText}</div>
       </div>
