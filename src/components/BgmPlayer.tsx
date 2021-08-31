@@ -5,18 +5,15 @@ type Props = {
   msFromTarget: number;
 };
 const BgmPlayer: React.FC<Props> = ({ msFromTarget }) => {
-  // 初期値が-10秒以下なら未プレイにする
-  const [isPlaying, setPlaying] = useState(-msFromTarget < 10000);
+  // 残りが10秒台になったらカウントダウン
+  const isCountDown = 0 > msFromTarget && -11000 < msFromTarget;
   const [player, setPlayer] = useState<any>(null);
 
   useEffect(() => {
-    if (isPlaying) return;
-    // 残りが10秒台以下になったら再生
-    if (Math.floor(msFromTarget / -1000) <= 10) {
-      setPlaying(true);
+    if (isCountDown) {
       player?.playVideo();
     }
-  }, [msFromTarget]);
+  }, [isCountDown, player]);
 
   const onReady = (evt: Event) => {
     setPlayer(evt.target);
