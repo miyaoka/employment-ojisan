@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef } from "react"
 import styled, { keyframes } from "styled-components";
 import Reward, { RewardElement } from "react-rewards";
+import BgmPlayer from "./BgmPlayer"
+import { Status } from "../types"
 
 type TimeDiff = {
   sec: number;
@@ -77,6 +79,25 @@ img{
 `;
 const confettiCount = 300;
 
+function calculateStatus (secFromTarget: number): Status {
+  if (secFromTarget <= -11) {
+    return "neet";
+  }
+  if (0 > secFromTarget && -11 < secFromTarget) {
+    return "countingDown";
+  }
+  if (secFromTarget >= 0 && secFromTarget < 10) {
+    return "celebrating";
+  }
+  if (secFromTarget >= 10) {
+    return "working";
+  }
+
+  // 本来は throw すべきだが動作を優先し、安全側に倒し "neet" を返す
+  console.error({ error: "Unexpected Error", secFromTarget });
+  return "neet";
+}
+
 type Props = {
   msFromTarget: number;
 };
@@ -84,16 +105,17 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
   const confettiRef = useRef<RewardElement | null>(null);
 
-  // 指定時刻に達したら一定時間祝う
-  const isCelebrating = msFromTarget >= 0 && msFromTarget < 10000;
+  const secFromTarget = Math.floor(msFromTarget / 1000);
+  // 指定時刻に祝う等の処理を行うためステータスを計算する
+  const status = useMemo(() => calculateStatus(secFromTarget), [secFromTarget])
 
   useEffect(() => {
-    if (isCelebrating) {
+    if (status === "celebrating") {
       confettiRef.current?.rewardMe();
     }
-  }, [isCelebrating]);
+  }, [status]);
 
-  if (isCelebrating) {
+  if (status === "celebrating") {
     const syusyokuNow = [
       ...new Array(Math.floor((msFromTarget / 1000 + 1) ** 1.5)),
     ]
@@ -127,6 +149,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
         </div>
         <ShareOnTwitter tweetText={justSyusyokuText} />
         <SrOnly text={justSyusyokuText} />
+        <BgmPlayer status={status} />
       </>
     );
   }
@@ -171,6 +194,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
       </div>
       <ShareOnTwitter tweetText={tweetText} />
       <SrOnly text={srText} />
+      <BgmPlayer status={status} />
     </>
   );
 };

@@ -1,19 +1,36 @@
 import React, { useEffect, useState } from "react";
 import YouTube from "react-youtube";
+import { Status } from "../types";
+
+type YouTubeIFramePlayer = {
+  playVideo: () => void;
+  pauseVideo: () => void;
+  seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+}
+
+function assertYouTubeIFramePlayer (player?: unknown): player is YouTubeIFramePlayer {
+  return !!player;
+}
 
 type Props = {
-  msFromTarget: number;
+  status: Status
 };
-const BgmPlayer: React.FC<Props> = ({ msFromTarget }) => {
-  // 残りが10秒台になったらカウントダウン
-  const isCountDown = 0 > msFromTarget && -11000 < msFromTarget;
+const BgmPlayer: React.FC<Props> = ({ status }) => {
   const [player, setPlayer] = useState<any>(null);
 
   useEffect(() => {
-    if (isCountDown) {
-      player?.playVideo();
+    const playable = assertYouTubeIFramePlayer(player)
+    if (!playable) {
+      return;
     }
-  }, [isCountDown, player]);
+    if (status === "countingDown") {
+      player.playVideo();
+    }
+    if (status === "celebrating") {
+      player.pauseVideo();
+      player.seekTo(0, false);
+    }
+  }, [status, player]);
 
   const onReady = (evt: Event) => {
     setPlayer(evt.target);
@@ -28,4 +45,4 @@ const BgmPlayer: React.FC<Props> = ({ msFromTarget }) => {
   );
 };
 
-export default BgmPlayer;
+export default React.memo(BgmPlayer);

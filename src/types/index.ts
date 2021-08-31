@@ -1,0 +1,1 @@
+export type Status = 'neet' | 'countingDown' |'celebrating' | 'working'

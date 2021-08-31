@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import BgmPlayer from "../components/BgmPlayer";
 import CountDown from "../components/CountDown";
 import { useAnimationFrame } from "../hooks/animationFrame";
 
@@ -46,7 +45,6 @@ const Home: NextPage = () => {
       >
         {process.browser && <CountDown msFromTarget={timeFromEmployment} />}
       </main>
-      <BgmPlayer msFromTarget={timeFromEmployment} />
       <footer>
         <a
           href="https://github.com/miyaoka/employment-ojisan"
