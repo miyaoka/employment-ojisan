@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+import Reward, { RewardElement } from "react-rewards";
 
 type TimeDiff = {
   sec: number;
@@ -74,12 +75,18 @@ img{
   animation: ${Rotation} 60s linear infinite normal;,
 }
 `;
+const confettiCount = 300;
 
 type Props = {
   msFromTarget: number;
 };
 const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
+  const confettiRef = useRef<RewardElement | null>(null);
+
+  useEffect(() => {
+    confettiRef.current?.rewardMe();
+  }, []);
 
   if (msFromTarget >= 0 && msFromTarget < 10000) {
     const syusyokuNow = [
@@ -104,7 +111,17 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
           </div>
           <div>しました。</div>
         </div>
+
         <ShareOnTwitter tweetText={justSyusyokuText} />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Reward
+            ref={(ref) => {
+              confettiRef.current = ref;
+            }}
+            type="confetti"
+            config={{ elementCount: confettiCount, spread: 100 }}
+          ></Reward>
+        </div>
         <SrOnly text={justSyusyokuText} />
       </>
     );
