@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Reward, { RewardElement } from "react-rewards";
 
@@ -84,11 +84,16 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
   const confettiRef = useRef<RewardElement | null>(null);
 
-  useEffect(() => {
-    confettiRef.current?.rewardMe();
-  }, []);
+  // 指定時刻に達したら一定時間祝う
+  const isCelebrating = msFromTarget >= 0 && msFromTarget < 10000;
 
-  if (msFromTarget >= 0 && msFromTarget < 10000) {
+  useEffect(() => {
+    if (isCelebrating) {
+      confettiRef.current?.rewardMe();
+    }
+  }, [isCelebrating]);
+
+  if (isCelebrating) {
     const syusyokuNow = [
       ...new Array(Math.floor((msFromTarget / 1000 + 1) ** 1.5)),
     ]
@@ -110,18 +115,17 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
             {syusyokuNow}
           </div>
           <div>しました。</div>
+          <div className="flex justify-center">
+            <Reward
+              ref={(ref) => {
+                confettiRef.current = ref;
+              }}
+              type="confetti"
+              config={{ elementCount: confettiCount, spread: 100 }}
+            ></Reward>
+          </div>
         </div>
-
         <ShareOnTwitter tweetText={justSyusyokuText} />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Reward
-            ref={(ref) => {
-              confettiRef.current = ref;
-            }}
-            type="confetti"
-            config={{ elementCount: confettiCount, spread: 100 }}
-          ></Reward>
-        </div>
         <SrOnly text={justSyusyokuText} />
       </>
     );
