@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react"
+import React, { MutableRefObject, useEffect, useMemo, useRef } from "react"
 import styled, { keyframes } from "styled-components";
 import Reward, { RewardElement } from "react-rewards";
 import BgmPlayer from "./BgmPlayer"
@@ -100,23 +100,16 @@ function calculateStatus (secFromTarget: number): Status {
   return "neet";
 }
 
-type Props = {
+type ContentProps = {
+  status: Status;
   msFromTarget: number;
-};
-const CountDown: React.FC<Props> = ({ msFromTarget }) => {
-  const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
-  const confettiRef = useRef<RewardElement | null>(null);
-
-  const secFromTarget = Math.floor(msFromTarget / 1000);
-  // 指定時刻に祝う等の処理を行うためステータスを計算する
-  const status = useMemo(() => calculateStatus(secFromTarget), [secFromTarget])
-
-  useEffect(() => {
-    if (status === "celebrating") {
-      confettiRef.current?.rewardMe();
-    }
-  }, [status]);
-
+  confettiRef: MutableRefObject<RewardElement | null>;
+  preText: string;
+  timeText: string | number;
+  postText: string;
+  isBefore: boolean;
+}
+const Content: React.FC<ContentProps> = ({ status, msFromTarget, confettiRef , preText, timeText, postText, isBefore}) => {
   if (status === "celebrating") {
     const syusyokuNow = [
       ...new Array(Math.floor((msFromTarget / 1000 + 1) ** 1.5)),
@@ -146,15 +139,71 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
               }}
               type="confetti"
               config={{ elementCount: confettiCount, spread: 100 }}
-            ></Reward>
+            />
           </div>
         </div>
         <ShareOnTwitter tweetText={justSyusyokuText} />
         <SrOnly text={justSyusyokuText} />
-        <BgmPlayer status={status} />
       </>
     );
   }
+
+  const imgSrc = `/images/${
+    isBefore ? "syusyoku_nayamu_neet_man.png" : "message_syusyoku_omedetou.png"
+  }`;
+  return (
+    <>
+      <BgWrapper>
+        <img
+          src={imgSrc}
+          className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen pointer-events-none"
+        />
+      </BgWrapper>
+      {profile}
+      <div>{preText}</div>
+      {status === "countingDown" ? (
+        <>
+          <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] leading-snug">&nbsp;</div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-50 bg-opacity-70 p-8 rounded-3xl z-10">
+            <div className="flex justify-center w-full">
+              <div className="flex flex-col justify-center h-full">
+                <div className="content-center text-[64px] sm:text-[128px] md:text-[192px] lg:text-[256px] font-bold leading-snug whitespace-nowrap">
+                  {timeText}
+                </div>
+              </div>
+            </div>
+            <div className="text-right">{postText}</div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
+            {timeText}
+          </div>
+          <div>{postText}</div>
+        </>
+      )}
+    </>
+  )
+}
+
+type Props = {
+  msFromTarget: number;
+};
+const CountDown: React.FC<Props> = ({ msFromTarget }) => {
+  const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
+  const confettiRef = useRef<RewardElement | null>(null);
+
+  const secFromTarget = Math.floor(msFromTarget / 1000);
+  // 指定時刻に祝う等の処理を行うためステータスを計算する
+  const status = useMemo(() => calculateStatus(secFromTarget), [secFromTarget])
+
+  useEffect(() => {
+    if (status === "celebrating") {
+      confettiRef.current?.rewardMe();
+    }
+  }, [status]);
+
   const isBefore = msFromTarget < 0;
   const preText = `就職${isBefore ? "するまで、あと" : "してから"}`;
 
@@ -175,49 +224,28 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   const postText = `${isBefore ? "です" : "経ちました"}。`;
   const tweetText = `${subject}${preText}${timeText}${postText}`;
   const srText = `${subject}${preText}${noSecTime}${postText}`;
-  const imgSrc = `/images/${
-    isBefore ? "syusyoku_nayamu_neet_man.png" : "message_syusyoku_omedetou.png"
-  }`;
+
   return (
-    <div className="flex flex-col justify-between">
-      <div aria-hidden="true">
-        <BgWrapper>
-          <img
-            src={imgSrc}
-            className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen pointer-events-none"
+    <>
+      <div className="flex flex-col justify-between">
+        <div aria-hidden="true">
+          <Content
+            status={status}
+            msFromTarget={msFromTarget}
+            confettiRef={confettiRef}
+            preText={preText}
+            timeText={timeText}
+            postText={postText}
+            isBefore={isBefore}
           />
-        </BgWrapper>
-        {profile}
-        <div>{preText}</div>
-        {status === "countingDown" ? (
-          <>
-            <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] leading-snug">&nbsp;</div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-50 bg-opacity-70 p-8 rounded-3xl z-10">
-              <div className="flex justify-center w-full">
-                <div className="flex flex-col justify-center h-full">
-                  <div className="content-center text-[64px] sm:text-[128px] md:text-[192px] lg:text-[256px] font-bold leading-snug whitespace-nowrap">
-                    {timeText}
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">{postText}</div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
-              {timeText}
-            </div>
-            <div>{postText}</div>
-          </>
-        )}
+        </div>
+        <div>
+          <ShareOnTwitter tweetText={tweetText} />
+          <SrOnly text={srText} />
+        </div>
       </div>
-      <div>
-        <ShareOnTwitter tweetText={tweetText} />
-        <SrOnly text={srText} />
-        <BgmPlayer status={status} />
-      </div>
-    </div>
+      <BgmPlayer status={status} />
+    </>
   );
 };
 
