@@ -80,10 +80,12 @@ img{
 const confettiCount = 300;
 
 function calculateStatus (secFromTarget: number): Status {
-  if (secFromTarget <= -11) {
+  if (secFromTarget < -11) {
     return "neet";
   }
-  if (0 > secFromTarget && -11 < secFromTarget) {
+  // カウントダウン範囲 0 ~ -10.9999...
+  // 負数のfloorで-10秒台は-11になるので-11を含める
+  if (0 > secFromTarget && -11 <= secFromTarget) {
     return "countingDown";
   }
   if (secFromTarget >= 0 && secFromTarget < 10) {
