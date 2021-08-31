@@ -41,7 +41,7 @@ const Home: NextPage = () => {
         />
       </Head>
       <main
-        style={{ fontFamily: `'Shippori Mincho B1', serif` }}
+        style={{ fontFamily: `'Noto Serif', 'Shippori Mincho B1', serif` }}
         className="text-lg"
       >
         {process.browser && <CountDown msFromTarget={timeFromEmployment} />}
