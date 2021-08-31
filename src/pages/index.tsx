@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import BgmPlayer from "../components/BgmPlayer";
 import CountDown from "../components/CountDown";
 import { useAnimationFrame } from "../hooks/animationFrame";
 
@@ -38,6 +39,7 @@ const Home: NextPage = () => {
         className="text-lg"
       >
         {process.browser && <CountDown msFromTarget={timeFromEmployment} />}
+        <BgmPlayer msFromTarget={timeFromEmployment} />
       </main>
       <footer>
         <a
