@@ -32,8 +32,23 @@ const Home: NextPage = () => {
           key="twitter:card"
           content="summary_large_image"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <main>{process.browser && CountDown(timeFromEmployment)}</main>
+      <main
+        style={{ fontFamily: `'Shippori Mincho B1', serif` }}
+        className="text-lg"
+      >
+        {process.browser && CountDown(timeFromEmployment)}
+      </main>
     </div>
   );
 };

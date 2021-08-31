@@ -54,7 +54,7 @@ export default function CountDown(timeFromTarget: number) {
   const { sec, min, hour, date } = getTimeDiff(timeFromTarget);
 
   if (timeFromTarget >= 0 && timeFromTarget < 10) {
-    const syusyokuNow = [...new Array(Math.floor((timeFromTarget + 1) ** 1.7))]
+    const syusyokuNow = [...new Array(Math.floor((timeFromTarget + 1) ** 1.5))]
       .map((_) => "就職！")
       .join("");
     return (
@@ -88,7 +88,7 @@ export default function CountDown(timeFromTarget: number) {
       />
       {name}
       <div>{preText}</div>
-      <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold">
+      <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
         {time}
       </div>
       <div>{postText}</div>
