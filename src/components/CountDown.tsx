@@ -1,4 +1,5 @@
 import React from "react";
+import styled, { keyframes } from "styled-components";
 
 type TimeDiff = {
   sec: number;
@@ -58,6 +59,22 @@ const ShareOnTwitter = (props: { tweetText: string }) => {
   );
 };
 
+const Rotation = keyframes`
+  0%{ transform:rotate(0);}
+  100%{ transform:rotate(360deg); }
+`;
+const NowBgWrapper = styled.div`
+img{
+  animation: ${Rotation} 1.2s ease infinite normal;,
+}
+`;
+
+const BgWrapper = styled.div`
+img{
+  animation: ${Rotation} 60s linear infinite normal;,
+}
+`;
+
 type Props = {
   msFromTarget: number;
 };
@@ -71,14 +88,17 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
       .map(() => "就職！")
       .join("");
     const justSyusyokuText = `${subject}${syusyokuNow}しました。`;
+
     return (
       <>
         <div aria-hidden="true">
           {profile}
-          <img
-            src={`/images/message_syusyoku_omedetou.png`}
-            className="fixed left-0 top-0 z-[-1] object-contain opacity-50 w-screen h-screen"
-          />
+          <NowBgWrapper>
+            <img
+              src={`/images/message_syusyoku_omedetou.png`}
+              className="fixed left-0 top-0 z-[-1] object-contain opacity-50 w-screen h-screen"
+            />
+          </NowBgWrapper>
           <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-none text-red-500">
             {syusyokuNow}
           </div>
@@ -102,10 +122,12 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
   return (
     <>
       <div aria-hidden="true">
-        <img
-          src={imgSrc}
-          className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen"
-        />
+        <BgWrapper>
+          <img
+            src={imgSrc}
+            className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen"
+          />
+        </BgWrapper>
         {profile}
         <div>{preText}</div>
         <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
