@@ -26,7 +26,7 @@ const BgmPlayer: React.FC<Props> = ({ status }) => {
     if (status === "countingDown") {
       player.playVideo();
     }
-    if (status === "celebrating") {
+    if (status === "working") {
       player.pauseVideo();
       player.seekTo(0, false);
     }
