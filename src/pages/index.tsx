@@ -39,8 +39,8 @@ const Home: NextPage = () => {
         className="text-lg"
       >
         {process.browser && <CountDown msFromTarget={timeFromEmployment} />}
-        <BgmPlayer msFromTarget={timeFromEmployment} />
       </main>
+      <BgmPlayer msFromTarget={timeFromEmployment} />
       <footer>
         <a
           href="https://github.com/miyaoka/employment-ojisan"
