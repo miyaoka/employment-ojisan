@@ -49,7 +49,7 @@ const Home: NextPage = () => {
           title="repository"
           className="fixed right-4 bottom-4 w-[40px] h-[40px]"
         >
-          <img src="/images/GitHub-Mark-64px.png" />
+          <img src="/images/GitHub-Mark-64px.png" alt="GitHub" />
         </a>
       </footer>
     </div>
