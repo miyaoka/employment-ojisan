@@ -65,7 +65,7 @@ export default function CountDown(timeFromTarget: number) {
       .join("");
     const justSyusyokuText = `${subject}${syusyokuNow}しました。`;
     return (
-      <div>
+      <>
         <div aria-hidden="true">
           {profile}
           <img
@@ -79,7 +79,7 @@ export default function CountDown(timeFromTarget: number) {
           <ShareOnTwitter tweetText={justSyusyokuText} />
         </div>
         <SrOnly text={justSyusyokuText} />
-      </div>
+      </>
     );
   }
   const isBefore = timeFromTarget < 0;
@@ -93,7 +93,7 @@ export default function CountDown(timeFromTarget: number) {
     isBefore ? "syusyoku_nayamu_neet_man.png" : "message_syusyoku_omedetou.png"
   }`;
   return (
-    <div>
+    <>
       <div aria-hidden="true">
         <img
           src={imgSrc}
@@ -108,6 +108,6 @@ export default function CountDown(timeFromTarget: number) {
         <ShareOnTwitter tweetText={tweetText} />
       </div>
       <SrOnly text={srText} />
-    </div>
+    </>
   );
 }
