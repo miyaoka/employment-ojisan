@@ -28,9 +28,11 @@ const BgmPlayer: React.FC<Props> = ({ status }) => {
       return;
     }
     if (status === "countingDown") {
+      console.log("play1");
       player.playVideo();
     }
     if (status === "celebrating") {
+      console.log("play2");
       player2.playVideo();
     }
     if (status === "working") {
@@ -40,9 +42,11 @@ const BgmPlayer: React.FC<Props> = ({ status }) => {
   }, [status, player, player2]);
 
   const onReadyCountDown = (evt: Event) => {
+    console.log("ready1");
     setPlayer(evt.target);
   };
   const onReadyCelebrate = (evt: Event) => {
+    console.log("ready2");
     setPlayer2(evt.target);
   };
 
