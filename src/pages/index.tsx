@@ -23,7 +23,6 @@ const Home: NextPage = () => {
     <div className="p-4 sm:p-10">
       <Head>
         <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
         <meta name="description" key="description" content={desc} />
         <meta property="og:title" key="og:title" content={title} />
         <meta property="og:description" key="og:description" content={desc} />
