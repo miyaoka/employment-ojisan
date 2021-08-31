@@ -1,19 +1,24 @@
 import React from "react"
 
 type TimeDiff = {
+  milliSec: number;
   sec: number;
   min: number;
   hour: number;
   date: number;
 };
 
+/**
+ * @param diff milli seconds unix time
+ */
 const getTimeDiff = (diff: number): TimeDiff => {
   const time = Math.abs(diff);
-  const sec = time % 60;
-  const min = Math.floor(time / 60) % 60;
-  const hour = Math.floor(time / 3600) % 24;
-  const date = Math.floor(time / 86400);
-  return { date, hour, min, sec };
+  const milliSec = time % 60;
+  const sec = Math.floor(time / 1000) % 60;
+  const min = Math.floor(time / 1000 / 60) % 60;
+  const hour = Math.floor(time / 1000 / (60 ** 2)) % 24;
+  const date = Math.floor(time / 1000 / (60 ** 3));
+  return { date, hour, min, sec, milliSec };
 };
 
 const profile = (
@@ -60,9 +65,10 @@ const ShareOnTwitter = (props: { tweetText: string }) => {
 
 type Props = {
   timeFromTarget: number;
+  isMilliSecMode: boolean;
 }
-const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
-  const { sec, min, hour, date } = getTimeDiff(timeFromTarget);
+const CountDown: React.FC<Props> = ({ timeFromTarget, isMilliSecMode }) => {
+  const { milliSec, sec, min, hour, date } = getTimeDiff(timeFromTarget);
 
   if (timeFromTarget >= 0 && timeFromTarget < 10) {
     const syusyokuNow = [...new Array(Math.floor((timeFromTarget + 1) ** 1.5))]
@@ -89,7 +95,7 @@ const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
   }
   const isBefore = timeFromTarget < 0;
   const preText = `就職${isBefore ? "するまで、あと" : "してから"}`;
-  const time = `${date}日${hour}時間${min}分${sec}秒`;
+  const time = isMilliSecMode ? `${date}日${hour}時間${min}分${sec}.${milliSec}秒` : `${date}日${hour}時間${min}分${sec}秒`;
   const noSecTime = `${date}日${hour}時間${min}分`;
   const postText = `${isBefore ? "です" : "経ちました"}。`;
   const tweetText = `${subject}${preText}${time}${postText}`;
