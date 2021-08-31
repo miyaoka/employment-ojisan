@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BgmPlayer from "../components/BgmPlayer";
 import CountDown from "../components/CountDown";
 import { useAnimationFrame } from "../hooks/animationFrame";
 
-// 就職時の挙動を確認するには Date.now() + 15000; とかにしてください
-const employmentTime = new Date("2021-09-01T00:00:00+09:00").getTime();
+let employmentTime = new Date("2021-09-01T00:00:00+09:00").getTime();
 const getTimeFromEmployment = () => Math.floor(Date.now() - employmentTime);
 
 const ogImage = "https://i.imgur.com/9XZ9quS.png";
@@ -18,6 +17,14 @@ const Home: NextPage = () => {
   useAnimationFrame(() => {
     setTime(getTimeFromEmployment());
   });
+
+  // debug用。?count=[sec] で就職カウントダウン確認ができる時刻に設定
+  useEffect(() => {
+    const params = new URL(location.href).searchParams;
+    const count = Number(params.get("count") ?? undefined);
+    if (isNaN(count)) return;
+    employmentTime = Date.now() + count * 1000;
+  }, []);
 
   return (
     <div className="p-4 sm:p-10">
