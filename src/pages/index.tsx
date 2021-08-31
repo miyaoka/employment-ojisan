@@ -33,7 +33,7 @@ const Home: NextPage = () => {
           content="summary_large_image"
         />
       </Head>
-      <main>{CountDown(timeFromEmployment)}</main>
+      <main>{process.browser && CountDown(timeFromEmployment)}</main>
     </div>
   );
 };
