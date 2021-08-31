@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 type TimeDiff = {
   sec: number;
@@ -7,12 +7,12 @@ type TimeDiff = {
   date: number;
 };
 
-const getTimeDiff = (diff: number): TimeDiff => {
-  const time = Math.abs(diff);
-  const sec = time % 60;
-  const min = Math.floor(time / 60) % 60;
-  const hour = Math.floor(time / 3600) % 24;
-  const date = Math.floor(time / 86400);
+const getTimeDiff = (diffMs: number): TimeDiff => {
+  const diffSec = Math.floor(diffMs / 1000);
+  const sec = (diffMs % 60000) / 1000;
+  const min = Math.floor(diffSec / 60) % 60;
+  const hour = Math.floor(diffSec / 3600) % 24;
+  const date = Math.floor(diffSec / 86400);
   return { date, hour, min, sec };
 };
 
@@ -59,14 +59,16 @@ const ShareOnTwitter = (props: { tweetText: string }) => {
 };
 
 type Props = {
-  timeFromTarget: number;
-}
-const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
-  const { sec, min, hour, date } = getTimeDiff(timeFromTarget);
+  msFromTarget: number;
+};
+const CountDown: React.FC<Props> = ({ msFromTarget }) => {
+  const { sec, min, hour, date } = getTimeDiff(Math.abs(msFromTarget));
 
-  if (timeFromTarget >= 0 && timeFromTarget < 10) {
-    const syusyokuNow = [...new Array(Math.floor((timeFromTarget + 1) ** 1.5))]
-      .map((_) => "就職！")
+  if (msFromTarget >= 0 && msFromTarget < 10000) {
+    const syusyokuNow = [
+      ...new Array(Math.floor((msFromTarget / 1000 + 1) ** 1.5)),
+    ]
+      .map(() => "就職！")
       .join("");
     const justSyusyokuText = `${subject}${syusyokuNow}しました。`;
     return (
@@ -87,9 +89,9 @@ const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
       </>
     );
   }
-  const isBefore = timeFromTarget < 0;
+  const isBefore = msFromTarget < 0;
   const preText = `就職${isBefore ? "するまで、あと" : "してから"}`;
-  const time = `${date}日${hour}時間${min}分${sec}秒`;
+  const time = `${date}日${hour}時間${min}分${sec.toFixed(3)}秒`;
   const noSecTime = `${date}日${hour}時間${min}分`;
   const postText = `${isBefore ? "です" : "経ちました"}。`;
   const tweetText = `${subject}${preText}${time}${postText}`;
@@ -115,6 +117,6 @@ const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
       <SrOnly text={srText} />
     </>
   );
-}
+};
 
 export default CountDown;

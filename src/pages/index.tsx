@@ -2,10 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import CountDown from "../components/CountDown";
+import { useAnimationFrame } from "../hooks/animationFrame";
 
 const employmentTime = new Date("2021-09-01T00:00:00+09:00").getTime();
-const getTimeFromEmployment = () =>
-  Math.floor((Date.now() - employmentTime) / 1000);
+const getTimeFromEmployment = () => Math.floor(Date.now() - employmentTime);
 
 const ogImage = "https://i.imgur.com/9XZ9quS.png";
 const title = "@sadnessOjisan 就職タイマー";
@@ -13,10 +13,9 @@ const desc = "社会性へのカウントダウン";
 
 const Home: NextPage = () => {
   const [timeFromEmployment, setTime] = useState(getTimeFromEmployment());
-
-  setInterval(() => {
+  useAnimationFrame(() => {
     setTime(getTimeFromEmployment());
-  }, 1000);
+  });
 
   return (
     <div className="p-4 sm:p-10">
@@ -37,7 +36,7 @@ const Home: NextPage = () => {
         style={{ fontFamily: `'Shippori Mincho B1', serif` }}
         className="text-lg"
       >
-        {process.browser && <CountDown timeFromTarget={timeFromEmployment} />}
+        {process.browser && <CountDown msFromTarget={timeFromEmployment} />}
       </main>
       <footer>
         <a
