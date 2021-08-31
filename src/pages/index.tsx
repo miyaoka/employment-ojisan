@@ -5,7 +5,7 @@ import BgmPlayer from "../components/BgmPlayer";
 import CountDown from "../components/CountDown";
 import { useAnimationFrame } from "../hooks/animationFrame";
 
-// 就職時の挙動を確認するには Date.now() + 5000; とかにしてください
+// 就職時の挙動を確認するには Date.now() + 15000; とかにしてください
 const employmentTime = new Date("2021-09-01T00:00:00+09:00").getTime();
 const getTimeFromEmployment = () => Math.floor(Date.now() - employmentTime);
 
