@@ -96,7 +96,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
           <NowBgWrapper>
             <img
               src={`/images/message_syusyoku_omedetou.png`}
-              className="fixed left-0 top-0 z-[-1] object-contain opacity-50 w-screen h-screen"
+              className="fixed left-0 top-0 z-[-1] object-contain opacity-50 w-screen h-screen pointer-events-none"
             />
           </NowBgWrapper>
           <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-none text-red-500">
@@ -138,7 +138,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
         <BgWrapper>
           <img
             src={imgSrc}
-            className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen"
+            className="fixed left-0 top-0 z-[-1] object-contain opacity-25 w-screen h-screen pointer-events-none"
           />
         </BgWrapper>
         {profile}
