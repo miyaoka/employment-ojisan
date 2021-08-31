@@ -13,7 +13,7 @@ const desc = "社会性へのカウントダウン";
 
 const Home: NextPage = () => {
   const [timeFromEmployment, setTime] = useState(getTimeFromEmployment());
-  const [milliSecMode, setMilliSecMode] = useState(true);
+  const [milliSecMode, setMilliSecMode] = useState(false);
 
   useEffect(() => {
     const isMilliSecMode = localStorage.getItem('milliSecMode');
