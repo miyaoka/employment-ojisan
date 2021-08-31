@@ -1,3 +1,5 @@
+import React from "react"
+
 type TimeDiff = {
   sec: number;
   min: number;
@@ -56,7 +58,10 @@ const ShareOnTwitter = (props: { tweetText: string }) => {
   );
 };
 
-export default function CountDown(timeFromTarget: number) {
+type Props = {
+  timeFromTarget: number;
+}
+const CountDown: React.FC<Props> = ({ timeFromTarget }) => {
   const { sec, min, hour, date } = getTimeDiff(timeFromTarget);
 
   if (timeFromTarget >= 0 && timeFromTarget < 10) {
@@ -111,3 +116,5 @@ export default function CountDown(timeFromTarget: number) {
     </>
   );
 }
+
+export default CountDown;
