@@ -179,7 +179,7 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
     isBefore ? "syusyoku_nayamu_neet_man.png" : "message_syusyoku_omedetou.png"
   }`;
   return (
-    <>
+    <div className="flex flex-col justify-between">
       <div aria-hidden="true">
         <BgWrapper>
           <img
@@ -189,15 +189,35 @@ const CountDown: React.FC<Props> = ({ msFromTarget }) => {
         </BgWrapper>
         {profile}
         <div>{preText}</div>
-        <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
-          {timeText}
-        </div>
-        <div>{postText}</div>
+        {status === "countingDown" ? (
+          <>
+            <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] leading-snug">&nbsp;</div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-50 bg-opacity-70 p-8 rounded-3xl z-10">
+              <div className="flex justify-center w-full">
+                <div className="flex flex-col justify-center h-full">
+                  <div className="content-center text-[64px] sm:text-[128px] md:text-[192px] lg:text-[256px] font-bold leading-snug whitespace-nowrap">
+                    {timeText}
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">{postText}</div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="text-[32px] sm:text-[64px] md:text-[72px] lg:text-[96px] font-bold leading-snug">
+              {timeText}
+            </div>
+            <div>{postText}</div>
+          </>
+        )}
       </div>
-      <ShareOnTwitter tweetText={tweetText} />
-      <SrOnly text={srText} />
-      <BgmPlayer status={status} />
-    </>
+      <div>
+        <ShareOnTwitter tweetText={tweetText} />
+        <SrOnly text={srText} />
+        <BgmPlayer status={status} />
+      </div>
+    </div>
   );
 };
 
