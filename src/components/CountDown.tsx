@@ -76,8 +76,8 @@ export default function CountDown(timeFromTarget: number) {
             {syusyokuNow}
           </div>
           <div>しました。</div>
-          <ShareOnTwitter tweetText={justSyusyokuText} />
         </div>
+        <ShareOnTwitter tweetText={justSyusyokuText} />
         <SrOnly text={justSyusyokuText} />
       </>
     );
@@ -105,8 +105,8 @@ export default function CountDown(timeFromTarget: number) {
           {time}
         </div>
         <div>{postText}</div>
-        <ShareOnTwitter tweetText={tweetText} />
       </div>
+      <ShareOnTwitter tweetText={tweetText} />
       <SrOnly text={srText} />
     </>
   );
