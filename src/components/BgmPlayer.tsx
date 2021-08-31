@@ -22,7 +22,13 @@ const BgmPlayer: React.FC<Props> = ({ msFromTarget }) => {
     setPlayer(evt.target);
   };
 
-  return <YouTube videoId="PS2qPYbzEb4" onReady={onReady} className="hidden" />;
+  return (
+    <YouTube
+      videoId="PS2qPYbzEb4"
+      onReady={onReady}
+      className="opacity-0 pointer-events-none fixed bottom-0"
+    />
+  );
 };
 
 export default BgmPlayer;
