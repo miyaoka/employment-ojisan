@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import Reward, { RewardElement } from "react-rewards";
@@ -198,6 +199,18 @@ const Content: React.FC<ContentProps> = ({
               {timeText}
             </div>
             <div>{postText}</div>
+            {!isBefore && (
+              <div className="mt-8">
+                <Link
+                  href={{
+                    pathname: "/",
+                    query: { count: 15 },
+                  }}
+                >
+                  <a>🔁感動のカウントダウンをもう一度</a>
+                </Link>
+              </div>
+            )}
           </>
         )}
       </div>

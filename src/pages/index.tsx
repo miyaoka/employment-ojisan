@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CountDown from "../components/CountDown";
 import { useAnimationFrame } from "../hooks/animationFrame";
@@ -11,19 +12,19 @@ const ogImage = "https://i.imgur.com/9XZ9quS.png";
 const title = "@sadnessOjisan 就職タイマー";
 const desc = "社会性へのカウントダウン";
 
-const Home: NextPage = () => {
+const Home: NextPage = (params) => {
   const [timeFromEmployment, setTime] = useState(getTimeFromEmployment());
   useAnimationFrame(() => {
     setTime(getTimeFromEmployment());
   });
 
   // debug用。?count=[sec] で就職カウントダウン確認ができる時刻に設定
+  const router = useRouter();
   useEffect(() => {
-    const params = new URL(location.href).searchParams;
-    const count = Number(params.get("count") ?? undefined);
+    const count = Number(router.query.count ?? undefined);
     if (isNaN(count)) return;
     employmentTime = Date.now() + count * 1000;
-  }, []);
+  }, [router.query.count]);
 
   return (
     <div className="p-4 sm:p-10">
